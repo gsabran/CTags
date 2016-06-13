@@ -357,7 +357,12 @@ def resort_ctags(tag_file):
 
     with codecs.open(tag_file, encoding='utf-8', errors='replace') as file_:
         for line in file_:
-            keys.setdefault(line.split('\t')[FILENAME], []).append(line)
+            try:
+                keys.setdefault(line.split('\t')[FILENAME], []).append(line)
+            except Exception as e:
+                print 'error!', 'file:', tag_file, 'line:', line, "len(line.split('\t'))", len(line.split('\t'))
+                raise e
+                
 
     with codecs.open(tag_file+'_sorted_by_file', 'w', encoding='utf-8',
                      errors='replace') as file_:
